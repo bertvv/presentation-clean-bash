@@ -1,0 +1,35 @@
+# Clean Bash - outline
+
+- whoami
+- intro, cf talk synopsis
+- Robert C. Martin's Clean Code
+- Improve robustness:
+    - Vim + ALE + ShellCheck, templates
+    - Write code incrementally & test continually!
+    - `set -euo pipefail`
+    - `IFS=$'\n\t'`
+    - variables: make them local (in functions) and immutable when possible
+    - Single Responsibility Principle
+    - Principles from functional programming
+        - no side effects (don't mutate global vars)
+        - command/query
+        - Don't mix levels of abstraction
+    - Print log messages
+    - `set -x`, `set +x` around problematic code
+    - Idempotence
+        - Ensure script can be run under any circumstance
+        - Result of script is desired state of the system
+        - Fail early
+    - Testing with BATS
+- Improve readability:
+    - variable naming
+        - environment vars: capitals
+        - "local" vars: small letters
+    - function naming -> meaningful names
+    - command substitution: no backticks, but `$(cmd)`
+    - use long parameter names when available
+    - name function parameters
+        - keep it simple, avoid too many args
+        - document usage
+    - encode complex tests in a function
+    
