@@ -52,7 +52,7 @@ If you accept this, then hopefully also:
 
 +++
 
-### Clean Code
+@title[Clean code]
 
 ![Clean Code book](assets/img/clean-code.jpg)
 
@@ -65,6 +65,8 @@ If you accept this, then hopefully also:
 ### My setup
 
 Vim + ALE + ShellCheck
+
+templates.vim + Ultisnips
 
 +++
 
@@ -84,7 +86,23 @@ ShellCheck: Static analyzer for Bash
 
 +++
 
+templates.vim
+
+<https://www.vim.org/scripts/script.php?script_id=1172>
+
+[My Bash script template](https://github.com/bertvv/dotfiles/blob/master/.vim/templates/sh)
+
++++
+
+Ultisnips
+
+<https://www.vim.org/scripts/script.php?script_id=2715>
+
+[My Bash snippets](https://github.com/bertvv/dotfiles/blob/master/.vim/UltiSnips/sh.snippets)
+
 ### Write code incrementally and test continually!
+
+<!-- TODO: add typical scripting session with editor and console -->
 
 +++
 
@@ -108,7 +126,7 @@ IFS=$' \n\t'
 IFS=$'\n\t' 
 ```
 
-See example [ifs.sh](assets/examples/ifs.sh)
+See example [ifs.sh](https://github.com/bertvv/presentation-clean-bash/blob/master/examples/ifs.sh)
 
 +++
 
