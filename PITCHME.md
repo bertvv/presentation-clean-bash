@@ -1,8 +1,5 @@
-@snap[west text-25 text-bold]
-Clean Bash
-@snapend
-
-@snap[west text-20 text-bold]
+@snap[west text-22 text-bold]
+Clean Bash<br><br>
 *Leveling up your shell scripting skills*
 @snapend
 
@@ -22,6 +19,7 @@ Bert Van Vreckem, LOADays, 2019-05-04
 - Lecturer ICT at University College Ghent (HOGENT)
     - Linux, stats, project/thesis coach
 - Open source enthousiast
+    - Linux user since ~2000
     - Ansible, Git, LaTeX, Vagrant, ...
 
 +++
@@ -221,8 +219,8 @@ my_function arg1 arg2 arg3
 # Usage: mkd DIR
 #   Create a directory and cd into it.
 mkd() {
-    local dir="${1}"
-    mkdir -p "${dir}" && cd "${dir}"
+  local dir="${1}"
+  mkdir -p "${dir}" && cd "${dir}"
 }
 
 # Example:
@@ -252,13 +250,15 @@ copy_iso_to_usb() {
 }
 ```
 
++++
+
 ### Make variables in functions local
 
 ```bash
 # Variables within functions are defined in the same
 # environment/shell as the script!
 my_fun() {
-    var='Hello world!'
+  var='Hello world!'
 }
 
 my_fun
@@ -271,7 +271,7 @@ echo "${var}"
 ```bash
 # Local variables only exist within the function
 my_fun() {
-    local var='Hello world!'
+  local var='Hello world!'
 }
 
 my_fun
@@ -342,25 +342,25 @@ user="${1}"
 password="${2}"
 ```
 
+In functions, makes (number of) expected parameters more explicit
+
 +++
 
 ### In functions
 
 ```bash
-# Usage: ensure_user_exists USER PASSWORD
+# Usage: ensure_user_exists USER
 ensure_user_exists() {
   local user="${1}"
-  local password="${2}"
 
   if ! getent passwd "${user}" > /dev/null
   then
       adduser "${user}"
   fi
-  passwd --stdin <<< "${password}"
 }
 
 # E.g.
-ensure_user_exists bert 'Jn^mh`?5dZHt[$Y:'
+ensure_user_exists bert
 ```
 
 +++
@@ -368,10 +368,10 @@ ensure_user_exists bert 'Jn^mh`?5dZHt[$Y:'
 ### Use `$()` for command substitution
 
 ```bash
-# Backticks are hard to read
+# Backticks are hard to distinguish from other quotes
 iso_size=`stat -c '%s' "${iso}"`
 
-# Recommended: $() syntax is more clear
+# Recommended: $(cmd) syntax is more clear
 iso_size=$(stat -c '%s' "${iso}")
 ```
 
