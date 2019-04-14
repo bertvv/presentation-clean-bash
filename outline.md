@@ -13,18 +13,21 @@
     - [ ] no side effects (don't mutate global vars)
     - [ ] Single level of abstraction
     - [x] Print log messages
-    - [ ] `set -x`, `set +x` around problematic code
-    - [ ] Idempotence
+    - [x] `set -x`, `set +x` around problematic code
+    - [x] Idempotence
         - Ensure script can be run under any circumstance
         - Result of script is desired state of the system
         - Fail early
-    - [ ] Testing with BATS
+    - [x] Testing with BATS
 - [ ] Improve readability:
     - [ ] variable naming
         - environment vars: capitals
         - "local" vars: small letters
     - [ ] function naming -> meaningful names
     - [ ] command substitution: no backticks, but `$(cmd)`
+    - [ ] Split lines
+        - one operation per line
+        - long argument lists
     - [ ] use long parameter names when available
     - [ ] name function parameters
         - keep it simple, avoid too many args

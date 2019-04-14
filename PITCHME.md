@@ -145,6 +145,143 @@ error() {
 }
 ```
 
++++
+
+### Bash's "debug mode"
+
+```bash
+set -x
+#
+# Problematic code
+#
+set +x
+```
+
+Shows each command, after applying substitutions
+
++++
+
+### Unit tests with BATS
+
+Bash Automated Testing System
+
+<https://github.com/bats-core/bats-core>
+
+Example:
+
+- <https://github.com/HoGentTIN/ilnx-labos/blob/master/labo6/tests/02-gebruikerslijst.bats>
+- <https://github.com/HoGentTIN/ilnx-labos/blob/master/labo8/tests/1-passphrase.bats>
+- <https://github.com/HoGentTIN/elnx-sme/blob/master/test/pu004/lamp.bats>
+
+---
+
+## Functions as building blocks of robust, clean shell scripts
+
++++
+
+### Bash functions
+
+- scripts inside scripts
+    - but no subshell!
+- pass arguments: positional parameters
+- return value = exit status
+    - of last statement
+    - `return 0`, `return 1`, etc.
+- other "return values" through `stdout`
+
++++
+
+```bash
+# Function declaration syntax
+my_function() {
+    # ...
+}
+
+# Calling a function
+my_function arg1 arg2 arg3
+```
+
++++
+
+```bash
+# Usage: mkd DIR
+#   Create a directory and cd into it.
+mkd() {
+    mkdir -p "${1}" && cd "${1}"
+}
+
+# Example:
+mkd a/b/c
+```
+
++++
+
+```bash
+# Usage: copy_iso_to_usb ISO_FILE DEVICE
+# Copy an ISO file to a USB device, showing progress with pv (pipe viewer)
+# e.g. copy_iso_to_usb FedoraWorkstation.iso /dev/sdc
+copy_iso_to_usb() {
+  # Name parameters
+  local iso="${1}"
+  local destination="${2}"
+  # Local variable:
+  local iso_size
+
+  iso_size=$(stat -c '%s' "${iso}")
+
+  log 'Copying ${iso} (${iso_size}B) to ${destination}'
+
+  dd if="${iso}" \
+    | pv --size "${iso_size}" \
+    | sudo dd of="${destination}"
+}
+```
+
+---
+
+## Robustness, continued
+
++++
+
+### Idempotence
+
+@snap[south west]
+@quote[**Idempotence** is the property of an operation whereby it can be applied multiple times without changing the result beyond the initial application.](Wikipedia)
+@endsnap
+
++++
+
+This script can only be run once:
+
+```bash
+#! /bin/bash
+user="${1}"
+password="${2}"
+
+adduser "${user}"
+passwd --stdin <<< "${password}"
+```
+
++++
+
+```bash
+# ...
+
+if ! getent passwd "${user}" > /dev/null
+then
+    adduser "${user}"
+fi
+passwd --stdin <<< "${password}"
+```
+
++++
+
+### Make your scripts idempotent
+
+- Script can be run under any cirumstance
+- Result is desired state of the system
+- Fail early if something goes wrong
+
 ---
 
 ## Improve Readability
@@ -152,6 +289,8 @@ error() {
 ---
 
 ## Q&A
+
++++
 
 ## Keep in touch!
 
