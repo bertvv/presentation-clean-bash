@@ -1,5 +1,9 @@
 @snap[west text-25 text-bold]
-Clean Bash<br>*Leveling up your shell scripting skills*
+Clean Bash
+@snapend
+
+@snap[west text-20 text-bold]
+*Leveling up your shell scripting skills*
 @snapend
 
 @snap[south-west byline text-06]
@@ -143,10 +147,10 @@ See example [ifs.sh](https://github.com/bertvv/presentation-clean-bash/blob/mast
 ```bash
 readonly debug='on'
 log() {
-    printf '\e[0;33m[INF] %s\e[0m\n' "${*}"
+    printf '\e[0;33m[INF] %s\e[0m\n' "${*}" 1>&2
 }
 debug() {
-  [ "${debug}" == 'on' ] && printf '\e[0;36m[DBG] %s\e[0m\n' "${*}"
+  [ "${debug}" = 'on' ] && printf '\e[0;36m[DBG] %s\e[0m\n' "${*}" 1>&2
 }
 error() {
   printf '\e[0;31m[ERR] %s\e[0m\n' "${*}" 1>&2
@@ -217,7 +221,8 @@ my_function arg1 arg2 arg3
 # Usage: mkd DIR
 #   Create a directory and cd into it.
 mkd() {
-    mkdir -p "${1}" && cd "${1}"
+    local dir="${1}"
+    mkdir -p "${dir}" && cd "${dir}"
 }
 
 # Example:
@@ -234,12 +239,12 @@ copy_iso_to_usb() {
   # Name parameters
   local iso="${1}"
   local destination="${2}"
+
   # Local variable:
   local iso_size
-
   iso_size=$(stat -c '%s' "${iso}")
 
-  log 'Copying ${iso} (${iso_size}B) to ${destination}'
+  log "Copying ${iso} (${iso_size}B) to ${destination}"
 
   dd if="${iso}" \
     | pv --size "${iso_size}" \
@@ -247,15 +252,40 @@ copy_iso_to_usb() {
 }
 ```
 
----
+### Make variables in functions local
 
-## Robustness, continued
+```bash
+# Variables within functions are defined in the same
+# environment/shell as the script!
+my_fun() {
+    var='Hello world!'
+}
+
+my_fun
+
+echo "${var}"
+```
 
 +++
 
-@snap[south-west]
+```bash
+# Local variables only exist within the function
+my_fun() {
+    local var='Hello world!'
+}
+
+my_fun
+
+echo "${var}" # This will fail
+```
+
+---
+
+## Idempotence
+
++++
+
 @quote[**Idempotence** is the property of an operation whereby it can be applied multiple times without changing the result beyond the initial application.](Wikipedia)
-@snapend
 
 +++
 
@@ -273,8 +303,7 @@ passwd --stdin <<< "${password}"
 +++
 
 ```bash
-# ...
-
+# Recommended: first, test whether change is necessary
 if ! getent passwd "${user}" > /dev/null
 then
     adduser "${user}"
@@ -320,14 +349,14 @@ password="${2}"
 ```bash
 # Usage: ensure_user_exists USER PASSWORD
 ensure_user_exists() {
-    local user="${1}"
-    local password="${2}"
-    
-    if ! getent passwd "${user}" > /dev/null
-    then
-        adduser "${user}"
-    fi
-    passwd --stdin <<< "${password}"
+  local user="${1}"
+  local password="${2}"
+
+  if ! getent passwd "${user}" > /dev/null
+  then
+      adduser "${user}"
+  fi
+  passwd --stdin <<< "${password}"
 }
 
 # E.g.
@@ -353,12 +382,12 @@ iso_size=$(stat -c '%s' "${iso}")
 ```bash
 # You won't remember what each option means
 rsync -avHXzR --delete --exclude-from="${exclude_file}" \
-    "${source_dir}" "${destination_dir}"
+  "${source_dir}" "${destination_dir}"
 
 # Recommended: long options are more descriptive
 rsync --verbose --archive --hard-links --xattrs --compress \
-    --relative --delete --exclude-from=${exclude_file} \
-    "${source_dir}" "${destination_dir}"
+  --relative --delete --exclude-from=${exclude_file} \
+  "${source_dir}" "${destination_dir}"
 ```
 
 +++
@@ -371,9 +400,11 @@ dd if="${iso}" | pv --size "${iso_size}" | sudo dd of="${destination}"
 
 # Recommended: one operation per line
 dd if="${iso}" \
-    | pv --size "${iso_size}" \
-    | sudo dd of="${destination}"
+  | pv --size "${iso_size}" \
+  | sudo dd of="${destination}"
 ```
+
++++
 
 ### Encode complex tests in a function
 
@@ -381,19 +412,63 @@ dd if="${iso}" \
 # The meaning of the test is not immediately apparent:
 if ! getent passwd "${user}" > /dev/null
 then
-    adduser "${user}"
+  adduser "${user}"
 fi
 
 # Recommended: use a meaningfully named function
-function user_exists() {
-    local user_name="${1}"
-    getent passwd "${user_name}" > /dev/null
+user_exists() {
+  local user_name="${1}"
+  getent passwd "${user_name}" > /dev/null
 }
 
 if ! user_exists "${user}"; then
-    adduser "${user}"
+  adduser "${user}"
 fi
 ```
+
+---
+
+## Other recommendations from Clean Code
+
++++
+
+### Use descriptive names
+
++++
+
+@quote[There are only two hard things in Computer Science: cache invalidation and naming things.](Phil Karlton)
+
++++
+
+### Single responsibility principle
+
+- Functions should do only one thing
+- They should do it well
+- They should do it only
+- Command/Query separation
+
++++
+
+### One level of abstraction for each function
+
+- No nested for loops
+
++++
+
+### Have no side effects
+
+- Don't change non-local variables!
+- Don't print on `stdout`
+    - unless that's the single responsibility of the function
+    - logging goes to `stderr` or a log file 
+- Effect of function only depends on function parameters
+
++++
+
+### Ordering functions: the stepdown rule
+
+- The code should read like a top-bottom narrative
+- Every function is followed by those at the next level of abstraction
 
 --- 
 

@@ -8,10 +8,10 @@
     - [x] Write code incrementally & test continually!
     - [x] `set -euo pipefail`
     - [x] `IFS=$'\n\t'`
-    - [ ] variables: make them local (in functions) and immutable when possible
-    - [ ] Single Responsibility Principle
-    - [ ] no side effects (don't mutate global vars)
-    - [ ] Single level of abstraction
+    - [x] variables: make them local (in functions) and immutable when possible
+    - [x] Single Responsibility Principle
+    - [x] no side effects (don't mutate global vars)
+    - [x] Single level of abstraction
     - [x] Print log messages
     - [x] `set -x`, `set +x` around problematic code
     - [x] Idempotence
@@ -29,7 +29,7 @@
         - one operation per line
         - long argument lists
     - [x] use long parameter names when available
-    - [ ] name function parameters
+    - [x] name function parameters
         - keep it simple, avoid too many args
         - document usage
     - [x] encode complex tests in a function
