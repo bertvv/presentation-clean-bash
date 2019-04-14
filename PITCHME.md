@@ -1,4 +1,10 @@
-# Clean Bash: Leveling up your shell scripting skills
+@snap[west text-25 text-bold]
+Clean Bash<br>*Leveling up your shell scripting skills*
+@snapend
+
+@snap[south-west byline text-06]
+Bert Van Vreckem, LOADays, 2019-05-04
+@snapend
 
 ---
 
@@ -351,8 +357,7 @@ rsync -avHXzR --delete --exclude-from="${exclude_file}" \
 
 # Recommended: long options are more descriptive
 rsync --verbose --archive --hard-links --xattrs --compress \
-    --relative --delete  \
-    --exclude-from=${exclude_file} \
+    --relative --delete --exclude-from=${exclude_file} \
     "${source_dir}" "${destination_dir}"
 ```
 
