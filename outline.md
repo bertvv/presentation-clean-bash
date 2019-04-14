@@ -20,17 +20,17 @@
         - Fail early
     - [x] Testing with BATS
 - [ ] Improve readability:
-    - [ ] variable naming
+    - [x] variable naming
         - environment vars: capitals
         - "local" vars: small letters
-    - [ ] function naming -> meaningful names
-    - [ ] command substitution: no backticks, but `$(cmd)`
-    - [ ] Split lines
+    - [x] positional parameters -> meaningful names
+    - [x] command substitution: no backticks, but `$(cmd)`
+    - [x] Split lines
         - one operation per line
         - long argument lists
-    - [ ] use long parameter names when available
+    - [x] use long parameter names when available
     - [ ] name function parameters
         - keep it simple, avoid too many args
         - document usage
-    - [ ] encode complex tests in a function
+    - [x] encode complex tests in a function
     

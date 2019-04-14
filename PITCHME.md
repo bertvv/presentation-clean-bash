@@ -100,6 +100,8 @@ Ultisnips
 
 [My Bash snippets](https://github.com/bertvv/dotfiles/blob/master/.vim/UltiSnips/sh.snippets)
 
++++
+
 ### Write code incrementally and test continually!
 
 <!-- TODO: add typical scripting session with editor and console -->
@@ -141,7 +143,7 @@ debug() {
   [ "${debug}" == 'on' ] && printf '\e[0;36m[DBG] %s\e[0m\n' "${*}"
 }
 error() {
-  printf "\e[0;31m[ERR] %s\e[0m\n" "${*}" 1>&2
+  printf '\e[0;31m[ERR] %s\e[0m\n' "${*}" 1>&2
 }
 ```
 
@@ -167,7 +169,9 @@ Bash Automated Testing System
 
 <https://github.com/bats-core/bats-core>
 
-Example:
++++
+
+BATS examples:
 
 - <https://github.com/HoGentTIN/ilnx-labos/blob/master/labo6/tests/02-gebruikerslijst.bats>
 - <https://github.com/HoGentTIN/ilnx-labos/blob/master/labo8/tests/1-passphrase.bats>
@@ -243,11 +247,9 @@ copy_iso_to_usb() {
 
 +++
 
-### Idempotence
-
-@snap[south west]
+@snap[south-west]
 @quote[**Idempotence** is the property of an operation whereby it can be applied multiple times without changing the result beyond the initial application.](Wikipedia)
-@endsnap
+@snapend
 
 +++
 
@@ -280,13 +282,115 @@ passwd --stdin <<< "${password}"
 
 - Script can be run under any cirumstance
 - Result is desired state of the system
+- Makes no unnecessary changes
 - Fail early if something goes wrong
 
 ---
 
 ## Improve Readability
 
----
++++
+
+### Variable names
+
+- Local variables: small letters
+    - `${my_var}`
+- Environment (exported) variables: capitals
+    - `${MY_ENV_VAR}`
+
++++
+
+### Give positional parameters meaningful names
+
+```bash
+user="${1}"
+password="${2}"
+```
+
++++
+
+### In functions
+
+```bash
+# Usage: ensure_user_exists USER PASSWORD
+ensure_user_exists() {
+    local user="${1}"
+    local password="${2}"
+    
+    if ! getent passwd "${user}" > /dev/null
+    then
+        adduser "${user}"
+    fi
+    passwd --stdin <<< "${password}"
+}
+
+# E.g.
+ensure_user_exists bert 'Jn^mh`?5dZHt[$Y:'
+```
+
++++
+
+### Use `$()` for command substitution
+
+```bash
+# Backticks are hard to read
+iso_size=`stat -c '%s' "${iso}"`
+
+# Recommended: $() syntax is more clear
+iso_size=$(stat -c '%s' "${iso}")
+```
+
++++
+
+### Prefer long parameter names
+
+```bash
+# You won't remember what each option means
+rsync -avHXzR --delete --exclude-from="${exclude_file}" \
+    "${source_dir}" "${destination_dir}"
+
+# Recommended: long options are more descriptive
+rsync --verbose --archive --hard-links --xattrs --compress \
+    --relative --delete  \
+    --exclude-from=${exclude_file} \
+    "${source_dir}" "${destination_dir}"
+```
+
++++
+
+### Split long lines
+
+```bash
+# Long lines are harder to interpret
+dd if="${iso}" | pv --size "${iso_size}" | sudo dd of="${destination}"
+
+# Recommended: one operation per line
+dd if="${iso}" \
+    | pv --size "${iso_size}" \
+    | sudo dd of="${destination}"
+```
+
+### Encode complex tests in a function
+
+```bash
+# The meaning of the test is not immediately apparent:
+if ! getent passwd "${user}" > /dev/null
+then
+    adduser "${user}"
+fi
+
+# Recommended: use a meaningfully named function
+function user_exists() {
+    local user_name="${1}"
+    getent passwd "${user_name}" > /dev/null
+}
+
+if ! user_exists "${user}"; then
+    adduser "${user}"
+fi
+```
+
+--- 
 
 ## Q&A
 
