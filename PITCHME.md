@@ -64,6 +64,19 @@ If you accept this, then hopefully also:
 
 ![Clean Code book](assets/img/clean-code.jpg)
 
++++
+
+Clean code = the intent is clear
+
++++
+
+### Goal of this talk
+
+- Improve robustness
+- Improve readability
+
+of your shell scripts
+
 ---
 
 ## Improve robustness
@@ -112,7 +125,13 @@ Ultisnips
 
 ### Write code incrementally and test continually!
 
-<!-- TODO: add typical scripting session with editor and console -->
++++
+
+### Have at least 2 terminals open
+
++++
+
+![Typical Bash coding session](assets/img/bash-coding-session.png)
 
 +++
 
@@ -458,9 +477,6 @@ fi
 ### Have no side effects
 
 - Don't change non-local variables!
-- Don't print on `stdout`
-    - unless that's the single responsibility of the function
-    - logging goes to `stderr` or a log file 
 - Effect of function only depends on function parameters
 
 +++
@@ -470,7 +486,7 @@ fi
 - The code should read like a top-bottom narrative
 - Every function is followed by those at the next level of abstraction
 
---- 
+---
 
 ## Q&A
 
@@ -480,8 +496,8 @@ fi
 
 Bert Van Vreckem
 
-[@bertvanvreckem](http://twitter.com/bertvanvreckem)
+[@bertvanvreckem](https://twitter.com/bertvanvreckem)
 
-<http://twitter.com/bertvanvreckem>
+<https://twitter.com/bertvanvreckem>
 
-<http://github.com/bertvv/presentation-clean-bash>
+<https://github.com/bertvv/presentation-clean-bash>
