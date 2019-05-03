@@ -492,6 +492,8 @@ fi
 
 ![Obligatory XKCD reference](https://imgs.xkcd.com/comics/automation.png )
 
+<https://xkcd.com/1319/>
+
 +++
 
 ## Keep in touch!
