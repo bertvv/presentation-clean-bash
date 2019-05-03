@@ -149,10 +149,10 @@ set -o pipefail  # don't hide errors within pipes
 
 ```bash
 # Default
-IFS=$' \n\t' 
+IFS=$' \n\t'
 
 # Recommendation: remove the space
-IFS=$'\n\t' 
+IFS=$'\n\t'
 ```
 
 See example [ifs.sh](https://github.com/bertvv/presentation-clean-bash/blob/master/examples/ifs.sh)
@@ -489,6 +489,8 @@ fi
 ---
 
 ## Q&A
+
+![Obligatory XKCD reference](https://imgs.xkcd.com/comics/automation.png )
 
 +++
 
